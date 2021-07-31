@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { uploadFile } from './api/files'
 
+const FILE_NAME = 'file'
+const DEFAULT_USERNAME = 'dev'
+
 export default function Home() {
     const [file, setFile] = useState("");
 
     const handleSubmit = async (e) => {
       e.preventDefault()
-
+      
       const data = new FormData()
-      data.append('file', file, file.name)
+      data.append(FILE_NAME, file, `${DEFAULT_USERNAME}-${new Date().getTime()}-${file.name}`)
       
       try {
         await uploadFile(data)
