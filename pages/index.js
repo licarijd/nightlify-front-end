@@ -1,26 +1,30 @@
 import { useState } from 'react'
 import { uploadFile } from './api/files'
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import { FormControl } from '@material-ui/core';
+import Header from '../components/Header'
+import { createTheme } from '@material-ui/core/styles'
+import { CssBaseline } from '@material-ui/core';
+
+const theme = createTheme({
+  palette: {
+    type: "dark",
+  }
+});
 
 const FILE_NAME = 'file'
 const DEFAULT_USERNAME = 'dev'
 const useStyles = makeStyles((theme) => ({
-  root: {
-    '& > *': {
-      margin: theme.spacing(1),
-    },
-  },
   input: {
     display: 'none'
-  },
+  }
 }))
 
 export default function Home() {
     const [file, setFile] = useState("");
+    const [invalidInput, setInvalidInput] = useState(false)
     console.log(file)
 
     const handleSubmit = async (e) => {
@@ -47,28 +51,44 @@ export default function Home() {
     </FormControl>
   )*/
   return (
+    <ThemeProvider theme={theme}>
+    <CssBaseline/>
     <div className={classes.root}>
+      <Header />
+      <div className='divisor-top'></div>
+      <div className='header-container'>
+      <h1> Beautiful Nightmode Friendly Images </h1>
+      <h2> For your mobile app or website. </h2>
+      </div>
+      <div className='divisor-bottom'></div>
+      <div className='original-text'>Original Image</div>
+      <div>
+      <span>
+        <div className='original'></div>
+        <div className='converted'></div>
+      </span>
+      </div>
       <form onSubmit={handleSubmit}>
-      {/*<input
-        accept="image/*"
-        className={classes.input}
-        id="contained-button-file"
-        multiple
-        type="file"
-        onChange={e => setFile(e.target.files[0])}
-      />*/}
+      <div className='divisor-top'></div>
+      <div className='header-container'>
+      <h1> Upload Your Image </h1>
+      <h2> And we'll email you a nightmode friendly version. </h2>
       <label htmlFor="contained-button-file">
-        <Button type="submit" variant="contained" color="primary">
+        <Button type="submit" variant="contained">
           Upload
         </Button>
       </label>
       <input accept="image/*" className={classes.input} id="icon-button-file" type="file" onChange={e => setFile(e.target.files[0])}/>
       <label htmlFor="icon-button-file">
-        <IconButton color="primary" aria-label="upload picture" component="span">
+        <IconButton aria-label="upload picture" component="span">
           <PhotoCamera />
         </IconButton>
       </label>
+      { invalidInput && <div className='input-error'>Please use the camera icon to select a file</div> }
+      </div>
       </form>
     </div>
+    <div className='divisor-bottom'></div>
+    </ThemeProvider>
   );
 }
