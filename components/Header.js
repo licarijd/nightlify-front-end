@@ -27,7 +27,7 @@ export default function Header() {
 
   return (
     <div className={classes.root}>
-      <AppBar color="dark" position="static">
+      <AppBar color="inherit" position="static">
         <Toolbar>
           <div className='logo'/>
           <Typography variant="h6" className={classes.title}>

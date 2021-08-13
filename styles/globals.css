@@ -80,3 +80,8 @@ a {
   font-weight: 600;
   color: rgb(240, 9, 9);
 }
+
+.email-input {
+  margin-left: 2vw;
+  color: red;
+}
