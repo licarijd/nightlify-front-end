@@ -7,6 +7,7 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Header from '../components/Header'
 import { createTheme } from '@material-ui/core/styles'
 import { CssBaseline, TextField } from '@material-ui/core';
+import validator from 'email-validator'
 
 const theme = createTheme({
   palette: {
@@ -43,11 +44,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const [file, setFile] = useState("");
-  const [invalidInput, setInvalidInput] = useState(false)
+  const [invalidInputMessage, setinvalidInputMessage] = useState(false)
   const [email, setEmail] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (!validator.validate(email)) {
+      setinvalidInputMessage('Please enter a valid email address')
+      return
+    }
+
+    if (!file) {
+      setinvalidInputMessage('Please select an image to upload')
+      return
+    }
     
     const data = new FormData()
     data.append(FILE_NAME, file, `${DEFAULT_USERNAME}-${new Date().getTime()}-${file.name}`)
@@ -117,7 +128,7 @@ export default function Home() {
               }}
             />
             </span>
-            { invalidInput && <div className='input-error'>Please use the camera icon to select a file</div> }
+            { invalidInputMessage && <div className='input-error'>{invalidInputMessage}</div> }
           </div>
         </form>
       </div>
