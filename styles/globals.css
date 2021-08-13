@@ -75,13 +75,13 @@ a {
 }
 
 .input-error {
-  margin-top: 1vh;
+  height: 4vh;
+  margin-top: 1.5vh;
   font-size: 20px;
   font-weight: 600;
-  color: rgb(240, 9, 9);
+  color: rgb(254, 225, 7);
 }
 
 .email-input {
   margin-left: 2vw;
-  color: red;
 }

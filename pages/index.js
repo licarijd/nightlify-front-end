@@ -43,8 +43,8 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function Home() {
-  const [file, setFile] = useState("");
-  const [invalidInputMessage, setinvalidInputMessage] = useState(false)
+  const [file, setFile] = useState('');
+  const [invalidInputMessage, setinvalidInputMessage] = useState('')
   const [email, setEmail] = useState('')
 
   const handleSubmit = async (e) => {
@@ -59,6 +59,8 @@ export default function Home() {
       setinvalidInputMessage('Please select an image to upload')
       return
     }
+
+    setinvalidInputMessage('')
     
     const data = new FormData()
     data.append(FILE_NAME, file, `${DEFAULT_USERNAME}-${new Date().getTime()}-${file.name}`)
@@ -128,7 +130,7 @@ export default function Home() {
               }}
             />
             </span>
-            { invalidInputMessage && <div className='input-error'>{invalidInputMessage}</div> }
+            <div className='input-error'>{invalidInputMessage}</div>
           </div>
         </form>
       </div>
