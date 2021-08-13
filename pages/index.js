@@ -13,30 +13,23 @@ const theme = createTheme({
   palette: {
     type: "dark",
   }
-});
-
-const FILE_NAME = 'file'
-const DEFAULT_USERNAME = 'dev'
+})
 const useStyles = makeStyles((theme) => ({
   input: {
     display: 'none'
   },
-
   cssLabel: {
     '&$cssFocused': {
       color : 'white'
     }
   },
-
   cssOutlinedInput: {
     '&$cssFocused $notchedOutline': {
       borderColor: `white !important`,
       color: 'white'
     }
   },
-
   cssFocused: {},
-
   notchedOutline: {
     borderColor: 'white !important'
   }
@@ -63,8 +56,9 @@ export default function Home() {
     setinvalidInputMessage('')
     
     const data = new FormData()
-    data.append(FILE_NAME, file, `${DEFAULT_USERNAME}-${new Date().getTime()}-${file.name}`)
-    
+    data.append('file', file, `${new Date().getTime()}-${file.name}`)
+    data.set('data', email)
+
     try {
       await uploadFile(data)
     } catch(err) {
