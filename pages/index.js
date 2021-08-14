@@ -37,30 +37,33 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const [file, setFile] = useState('');
-  const [invalidInputMessage, setinvalidInputMessage] = useState('')
+  const [message, setMessage] = useState('')
   const [email, setEmail] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     if (!validator.validate(email)) {
-      setinvalidInputMessage('Please enter a valid email address')
+      setMessage('Please enter a valid email address')
       return
     }
 
     if (!file) {
-      setinvalidInputMessage('Please select an image to upload')
+      setMessage('Please select an image to upload')
       return
     }
 
-    setinvalidInputMessage('')
+    setMessage('')
     
     const data = new FormData()
     data.append('file', file, `${new Date().getTime()}-${file.name}`)
     data.set('data', email)
 
     try {
-      await uploadFile(data)
+      const res = await uploadFile(data)
+      
+      if (res.status == 200)
+        setMessage(`Thanks, an email will be sent to ${email} when your nightmode friendly images are ready!`)
     } catch(err) {
       console.log(err)
     }
@@ -124,7 +127,7 @@ export default function Home() {
               }}
             />
             </span>
-            <div className='input-error'>{invalidInputMessage}</div>
+            <div className='input-message'>{message}</div>
           </div>
         </form>
       </div>

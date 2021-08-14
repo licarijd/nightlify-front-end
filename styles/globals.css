@@ -74,12 +74,12 @@ a {
   margin-bottom: 1vh;
 }
 
-.input-error {
+.input-message {
   height: 4vh;
   margin-top: 1.5vh;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
-  color: rgb(254, 225, 7);
+  color: rgb(103, 189, 246);
 }
 
 .email-input {
