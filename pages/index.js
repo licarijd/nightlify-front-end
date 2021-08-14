@@ -108,14 +108,14 @@ export default function Home() {
         <h2> And we'll email you a nightmode friendly version. </h2>
         <FormControl component="fieldset">
           <RadioGroup aria-label="conversion type" name="conversion-type" value={conversionType} onChange={handleConversionChange}>
-            <FormControlLabel value={CONVERSION_TYPES.FREE} control={<Radio />} label="With Watermark - Free" />
-            <FormControlLabel value={CONVERSION_TYPES.PAID} control={<Radio />} label="Without Watermark - $1.00 CAD" />
+            <FormControlLabel value={CONVERSION_TYPES.FREE} control={<Radio />} label="With Watermark" />
+            <FormControlLabel value={CONVERSION_TYPES.PAID} control={<Radio />} label="Without Watermark" />
           </RadioGroup>
         </FormControl>
         <form className='input-form' onSubmit={handleSubmit}>
           <label htmlFor="contained-button-file">
             <Button type="submit" variant="contained">
-              Upload
+              { conversionType == CONVERSION_TYPES.PAID ? 'Upload - $1.00 CAD' : 'Upload' }
             </Button>
           </label>
           <input accept="image/*" className={classes.input} id="icon-button-file" type="file" onChange={e => setFile(e.target.files[0])}/>
