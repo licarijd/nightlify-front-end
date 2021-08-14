@@ -1,13 +1,21 @@
 import { useState } from 'react'
 import { uploadFile } from './api/files'
-import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
+import PhotoCamera from '@material-ui/icons/PhotoCamera'
 import Header from '../components/Header'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { createTheme } from '@material-ui/core/styles'
-import { CssBaseline, TextField } from '@material-ui/core';
+import { CssBaseline, FormControl, FormLabel, TextField } from '@material-ui/core';
 import validator from 'email-validator'
+
+const CONVERSION_TYPES = {
+  FREE: 'FREE',
+  PAID: 'PAID'
+}
 
 const theme = createTheme({
   palette: {
@@ -39,6 +47,11 @@ export default function Home() {
   const [file, setFile] = useState('');
   const [message, setMessage] = useState('')
   const [email, setEmail] = useState('')
+  const [conversionType, setConversionType] = useState(CONVERSION_TYPES.FREE)
+
+  const handleConversionChange = async (e) => {
+    setConversionType(e.target.value)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -57,7 +70,8 @@ export default function Home() {
     
     const data = new FormData()
     data.append('file', file, `${new Date().getTime()}-${file.name}`)
-    data.set('data', email)
+    data.set('email', email)
+    data.set('watermark', conversionType == CONVERSION_TYPES.FREE ? true : '')
 
     try {
       const res = await uploadFile(data)
@@ -88,23 +102,29 @@ export default function Home() {
             <div className='converted'/>
           </span>
         </div>
-          <form onSubmit={handleSubmit}>
-          <div className='divisor-top'/>
-          <div className='header-container'>
-            <h1> Upload Your Image </h1>
-            <h2> And we'll email you a nightmode friendly version. </h2>
-            <label htmlFor="contained-button-file">
-              <Button type="submit" variant="contained">
-                Upload
-              </Button>
-            </label>
-            <input accept="image/*" className={classes.input} id="icon-button-file" type="file" onChange={e => setFile(e.target.files[0])}/>
-            <label htmlFor="icon-button-file">
-              <IconButton aria-label="upload picture" component="span">
-                <PhotoCamera />
-              </IconButton>
-            </label>
-            <span className='email-input'>
+        <div className='divisor-top'/>
+        <div className='header-container'>
+        <h1> Upload Your Image </h1>
+        <h2> And we'll email you a nightmode friendly version. </h2>
+        <FormControl component="fieldset">
+          <RadioGroup aria-label="conversion type" name="conversion-type" value={conversionType} onChange={handleConversionChange}>
+            <FormControlLabel value={CONVERSION_TYPES.FREE} control={<Radio />} label="With Watermark - Free" />
+            <FormControlLabel value={CONVERSION_TYPES.PAID} control={<Radio />} label="Without Watermark - $1.00 CAD" />
+          </RadioGroup>
+        </FormControl>
+        <form className='input-form' onSubmit={handleSubmit}>
+          <label htmlFor="contained-button-file">
+            <Button type="submit" variant="contained">
+              Upload
+            </Button>
+          </label>
+          <input accept="image/*" className={classes.input} id="icon-button-file" type="file" onChange={e => setFile(e.target.files[0])}/>
+          <label htmlFor="icon-button-file">
+            <IconButton aria-label="upload picture" component="span">
+              <PhotoCamera />
+            </IconButton>
+          </label>
+          <span className='email-input'>
             <TextField
               id="standard-name"
               label="Email Address"
@@ -126,12 +146,12 @@ export default function Home() {
                 inputMode: "numeric"
               }}
             />
-            </span>
-            <div className='input-message'>{message}</div>
-          </div>
+          </span>
+          <div className='input-message'>{message}</div>
         </form>
       </div>
-      <div className='divisor-bottom'/>
+    </div>
+    <div className='divisor-bottom'/>
     </ThemeProvider>
   );
 }
